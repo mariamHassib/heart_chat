@@ -50,7 +50,7 @@ import de.vonniebelschuetz.ble_heart_rate_test.service.GcmIntentService;
  * @see de.vonniebelschuetz.ble_heart_rate_test.activity.BleActivity
  *
  */
-
+//mariam adding
 public class MainActivity extends BleActivity {
 
     private BleBroadcastReceiver mMainActivityReceiver = new BleBroadcastReceiver() {
