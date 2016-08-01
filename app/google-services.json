@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_id": "heart-rate-test-1292",
+    "project_number": "279786364012",
+    "name": "Heart Rate Test"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279786364012:android:2712df4340384f7c",
+        "client_id": "android:de.vonniebelschuetz.ble_heart_rate_test",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "de.vonniebelschuetz.ble_heart_rate_test",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [],
+      "api_key": [{ "current_key": "" }],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
