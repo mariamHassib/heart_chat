@@ -60,7 +60,7 @@ import de.vonniebelschuetz.ble_heart_rate_test.model.User;
 // TODO throw out unneccessary code that is now handled by BleActivity
 public class ChatRoomActivity extends BleActivity {
     private StandardPBEStringEncryptor mEncryptor;
-
+    private static int messageCount=-1;
     private String chatRoomId;
     private RecyclerView recyclerView;
     private ChatRoomThreadAdapter mMessageAdapter;
@@ -86,6 +86,7 @@ public class ChatRoomActivity extends BleActivity {
     private EditText inputMessage;
     private ArrayList<User> chatRoomUsers;
     private int lastHrReceived = 0;
+    private int receivedAge = 0;
 
     private void initEncryptor() {
         // set up encryptor
@@ -244,7 +245,19 @@ public class ChatRoomActivity extends BleActivity {
     }
 
     private void sendMessage() {
-        final String message = this.inputMessage.getText().toString().trim();
+         String message ="";
+        //If this is the first message in the chat, send age and resting HR
+        if (messageCount==-1){
+
+             message= this.inputMessage.getText().toString().trim()
+                    +'_'+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
+                    +'_'+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"50");
+            messageCount++;
+        }
+        else{
+         message = this.inputMessage.getText().toString().trim();
+        }
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         // TODO, FIXME this throws a class cast exception on fresh installs that have not yet read a heart rate
         String hr = preferences.getString(getResources().getString(R.string.pref_key_heart_rate), "-1");
@@ -398,7 +411,7 @@ public class ChatRoomActivity extends BleActivity {
                 }
 
                 int resting_pulse = Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_resting_pulse), "50"));
-                int max_hr= 220- Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_user_age), "26"));
+                int max_hr= (int)(208- (0.7*(Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_user_age), "26")))));
                 int firstColor = Utils.getColor(Integer.parseInt(hr), resting_pulse, max_hr, 0.0, 0.45, true);
                 Log.i(TAG, "max HR is now" + max_hr);
 

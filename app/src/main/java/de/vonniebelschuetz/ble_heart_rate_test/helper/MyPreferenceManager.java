@@ -44,12 +44,11 @@ public class MyPreferenceManager {
         editor.putString(KEY_USER_ID, user.getId());
         editor.putString(KEY_USER_NAME, user.getName());
         editor.putString(KEY_USER_EMAIL, user.getEmail());
-        editor.putString(KEY_USER_GENDER, user.getGender());
-        editor.putString(KEY_USER_AGE, user.getAge());
+       // editor.putString(KEY_USER_GENDER, user.getGender());
+       // editor.putString(KEY_USER_AGE, user.getAge());
         editor.apply();
 
-        Log.e(TAG, "User is stored in shared preferences. " + user.getName() + ", " + user.getEmail()
-                + ","+ user.getAge() +","+user.getGender());
+        Log.e(TAG, "User is stored in shared preferences. " + user.getName() + ", " + user.getEmail());
     }
 
     public User getUser() {
@@ -58,10 +57,10 @@ public class MyPreferenceManager {
             id = pref.getString(KEY_USER_ID, null);
             name = pref.getString(KEY_USER_NAME, null);
             email = pref.getString(KEY_USER_EMAIL, null);
-            gender = pref.getString(KEY_USER_GENDER, null);
-            age = pref.getString(KEY_USER_AGE, null);
+          //  gender = pref.getString(KEY_USER_GENDER, null);
+          //  age = pref.getString(KEY_USER_AGE, null);
 
-            return new User(id, name, email,gender,age);
+            return new User(id, name, email);
         }
         return null;
     }

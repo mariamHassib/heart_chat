@@ -66,24 +66,24 @@ public class LoginActivity extends AppCompatActivity {
         inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
        // inputLayoutGender = (TextInputLayout) findViewById(R.id.input_layout_gender);
-        inputLayoutAge= (TextInputLayout) findViewById(R.id.input_layout_age);
+        //inputLayoutAge= (TextInputLayout) findViewById(R.id.input_layout_age);
         inputName = (EditText) findViewById(R.id.input_name);
         inputEmail = (EditText) findViewById(R.id.input_email);
-        inputAge = (EditText)findViewById(R.id.input_age);
-        inputGender=(Spinner) findViewById(R.id.input_gender);
+        //inputAge = (EditText)findViewById(R.id.input_age);
+        //inputGender=(Spinner) findViewById(R.id.input_gender);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        inputGender.setAdapter(adapter);
+        //inputGender.setAdapter(adapter);
 
         btnEnter = (Button) findViewById(R.id.btn_enter);
 
         inputName.addTextChangedListener(new MyTextWatcher(inputName));
         inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
         //inputGender.addOnAttachStateChangeListener(onAt);
-        inputAge.addTextChangedListener(new MyTextWatcher(inputAge));
+        //inputAge.addTextChangedListener(new MyTextWatcher(inputAge));
 
 
         btnEnter.setOnClickListener(new View.OnClickListener() {
@@ -109,8 +109,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final String name = inputName.getText().toString();
         final String email = inputEmail.getText().toString();
-        final String gender = inputGender.getSelectedItem().toString();
-        final String age = inputAge.getText().toString();
+//        final String gender = inputGender.getSelectedItem().toString();
+//        final String age = inputAge.getText().toString();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 EndPoints.LOGIN, new Response.Listener<String>() {
@@ -129,10 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject userObj = obj.getJSONObject("user");
                         User user = new User(userObj.getString("user_id"),
                                 userObj.getString("name"),
-                                userObj.getString("email"),
-                                userObj.getString("gender"),
-                                userObj.getString("age"));
-
+                                userObj.getString("email"));
 
                         // storing user in shared preferences
                         MyApplication.getInstance().getPrefManager().storeUser(user);

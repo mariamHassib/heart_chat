@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Toolbar;
+import android.widget.BaseAdapter;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -261,8 +262,10 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+
             bindPreferenceSummaryToValue(findPreference("display_variants_list"));
             setupNotification(findPreference("display_variants_list"));
+
 
             Preference resting_pulse_preference = findPreference(getString(R.string.pref_key_resting_pulse));
             resting_pulse_preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -292,7 +295,32 @@ public class SettingsActivity extends PreferenceActivity {
                     return false;
                 }
             });
-        }
+
+            // Set age
+            Preference user_age_preference = findPreference(getString(R.string.pref_key_user_age));
+            user_age_preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                    String age = preferences.getString(getResources().getString(R.string.pref_key_user_age), "user_age");
+                    preference.getEditor().putString(getResources().getString(R.string.pref_key_user_age), age);
+                    preference.setSummary(age + " years");
+                    ((BaseAdapter)getPreferenceScreen().getRootAdapter()).notifyDataSetChanged();
+
+                   //preference.setSummary(age + " years");
+
+                    return true;
+                }
+            });
+
+
+
+
+
+        };
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
