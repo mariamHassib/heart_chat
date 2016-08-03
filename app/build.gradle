@@ -16,6 +16,11 @@ android {
     }
     productFlavors {
     }
+    defaultConfig {
+
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
 }
 
 repositories {
@@ -44,5 +49,6 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    compile 'com.android.support:multidex:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

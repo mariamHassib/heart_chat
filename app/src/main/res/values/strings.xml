@@ -48,6 +48,7 @@
 
     <string name="pref_key_display_mode_list">display_variants_list</string>
     <string name="pref_key_resting_pulse">resting_pulse</string>
+    <string name="pref_default_resting_pulse">60</string>
     <string name="pref_key_heart_rate">heart_rate</string>
 
     <string name="pref_summary_resting_pulse">Measure your resting pulse</string>

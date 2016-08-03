@@ -60,7 +60,7 @@ import de.vonniebelschuetz.ble_heart_rate_test.model.User;
 // TODO throw out unneccessary code that is now handled by BleActivity
 public class ChatRoomActivity extends BleActivity {
     private StandardPBEStringEncryptor mEncryptor;
-    private static int messageCount=-1;
+    private int messageCount=-1;
     private String chatRoomId;
     private RecyclerView recyclerView;
     private ChatRoomThreadAdapter mMessageAdapter;
@@ -250,8 +250,9 @@ public class ChatRoomActivity extends BleActivity {
         if (messageCount==-1){
 
              message= this.inputMessage.getText().toString().trim()
-                    +'_'+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
-                    +'_'+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"50");
+                    +"__"+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
+                    +','+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"60")
+                    +"__";
             messageCount++;
         }
         else{
@@ -347,7 +348,7 @@ public class ChatRoomActivity extends BleActivity {
             public void onErrorResponse(VolleyError error) {
                 NetworkResponse networkResponse = error.networkResponse;
                 Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
-                Toast.makeText(getApplicationContext(), "Volley error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 inputMessage.setText(message);
             }
         }) {
@@ -410,17 +411,23 @@ public class ChatRoomActivity extends BleActivity {
                     secondInitial = "+" + String.valueOf(chatRoomUsers.size()-1);
                 }
 
-                int resting_pulse = Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_resting_pulse), "50"));
+                String resting_pulse = mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse), "60");
                 int max_hr= (int)(208- (0.7*(Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_user_age), "26")))));
-                int firstColor = Utils.getColor(Integer.parseInt(hr), resting_pulse, max_hr, 0.0, 0.45, true);
-                Log.i(TAG, "max HR is now" + max_hr);
+                int maxhradjusted = (int)(max_hr-(max_hr-(0.9*max_hr)));
+                int firstColor = Utils.getColor(Integer.parseInt(hr), Integer.parseInt(resting_pulse), (int)(max_hr-(max_hr-(0.9*max_hr))), 0.0, 0.30, true);
+                Log.i(TAG, "max HR is now" + maxhradjusted);
+                //Toast.makeText(getApplicationContext(), "" +  "max HR is now" + max_hr,Toast.LENGTH_SHORT).show();;
 
                 //Make circle grey if last received is not more than 0
                 float[] hsv = {0, 0, 0.78f};
                 int secondColor=Color.HSVToColor(hsv);
 
-                if(lastHrReceived>0)
-                    secondColor = Utils.getColor(lastHrReceived);
+                if(lastHrReceived>0) {
+                    int secondAge = mMessageAdapter.getUserAge();
+                    int secondUserMaxHr= 208-(int)(0.7*secondAge);
+                    int secondUserRHR = mMessageAdapter.getUserRestPulse();
+                    secondColor = Utils.getColor(lastHrReceived, secondUserRHR, (int)(secondUserMaxHr - (secondUserMaxHr - ( 0.9 * secondUserMaxHr))), 0.0, 0.30, true);
+                }
                 TextDrawable firstDrawable = builder.build(firstInitial, firstColor);
                 TextDrawable secondDrawable = builder.build(secondInitial, secondColor);
 

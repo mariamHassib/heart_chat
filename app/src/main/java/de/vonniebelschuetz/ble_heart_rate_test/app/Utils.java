@@ -57,8 +57,8 @@ public class Utils {
     public static int getColor(int input) {
 
         // set input range
-        int input_end = 180;
-        int input_start = 50;
+        int input_end = 188;
+        int input_start = 60;
 
         // set offset for hue
         double offset = 0.0;
@@ -112,7 +112,7 @@ public class Utils {
         // ensure input_max > input_min
         int input_min = Math.min(input_end, input_start);
         int input_max = Math.max(input_end, input_start);
-
+        System.out.println("start is " + input_start + "end is"+ input_end);
         input = ensureRange(input, input_min, input_max);
 
         // set up input range
@@ -149,8 +149,9 @@ public class Utils {
         }
 
         double H = output; // Hue (note 0.4 = Green, 0.0 = Red)
-        double S = 0.6; // Saturation
+        double S = 0.9; // Saturation
         double B = 0.9; // Brightness
+        System.out.println("output color is " + output);
 
         float[] hsv = {(float) H, (float) S, (float) B};
 

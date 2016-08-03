@@ -285,14 +285,16 @@ public class SettingsActivity extends PreferenceActivity {
                     } else {
                         String hr = preferences.getString(getResources().getString(R.string.pref_key_heart_rate), "no heart rate");
                         preference.getEditor().putString(getResources().getString(R.string.pref_key_resting_pulse), hr);
+                        ((BaseAdapter)getPreferenceScreen().getRootAdapter()).notifyDataSetChanged();
                         if (!hr.equals("no heart rate")) {
                             preference.setSummary(hr + " bpm");
+
                         } else {
                             preference.setSummary(getResources().getString(R.string.pref_summary_resting_pulse));
                         }
                     }
                     // else save hr value as new resting pulse
-                    return false;
+                    return true;
                 }
             });
 

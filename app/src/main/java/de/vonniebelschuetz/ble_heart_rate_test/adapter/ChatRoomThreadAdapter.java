@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.vonniebelschuetz.ble_heart_rate_test.R;
 import de.vonniebelschuetz.ble_heart_rate_test.app.Utils;
@@ -29,6 +32,9 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private String userId;
     private int SELF = 100;
     private static String today;
+    String ageAndresthr="";
+    int userAge=25;
+    int userRestPulse=60;
 
     private Context mContext;
     private ArrayList<Message> messageArrayList;
@@ -87,6 +93,31 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Message message = messageArrayList.get(position);
+
+        //boolean isLatestAgeRHR = false;
+
+        // Check if this message contains age and resting pulse as such text_age,pulse_
+        String messageString = message.getMessage();
+        String regexString = Pattern.quote("__") + "(.*?)" + Pattern.quote("__");
+        Pattern pattern = Pattern.compile(regexString);
+        // text contains the full text that you want to extract data
+        Matcher matcher = pattern.matcher(messageString);
+
+        if (matcher.find()) {
+            ageAndresthr = matcher.group(1); // Since (.*?) is capturing group 1
+            Log.i(TAG, "age and rest hr are: " + ageAndresthr);
+            message.setMessage(messageString.substring(0, messageString.length() - 9));
+            Log.i(TAG, "message now is: " + message.getMessage());
+            String [] output = ageAndresthr.split(",");
+            String ageString=output[0] ;
+            String pulseString=output[1];
+            userAge=Integer.parseInt(ageString);
+            userRestPulse=Integer.parseInt(pulseString);
+            Log.i(TAG, "user age " + Integer.toString(userAge) + ", " + userId + ", " + Integer.toString(userRestPulse));
+
+        }
+
+
         ((ViewHolder) holder).messageView.setText(message.getMessage());
 
         String timestamp = getTimeStamp(message.getCreatedAt());
@@ -97,8 +128,10 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         ((ViewHolder) holder).timestamp.setText(timestamp);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        int resting_pulse = Integer.parseInt(preferences.getString(mContext.getString(R.string.pref_key_resting_pulse), "50"));
-        int color = Utils.getColor(message.getHr(), resting_pulse, 180, 0.0, 0.45, true);
+        //int resting_pulse = Integer.parseInt(preferences.getString(mContext.getString(R.string.pref_key_resting_pulse), "50"));
+        int resting_pulse=userRestPulse;
+        int max_hr=(int)(208-(0.7*userAge));
+        int color = Utils.getColor(message.getHr(), resting_pulse,(int)(max_hr-(max_hr-(0.9*max_hr))) , 0.0, 0.35, true);
         colorMessage(holder, color);
     }
 
@@ -124,6 +157,12 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         return messageArrayList.size();
+    }
+
+    public int getUserAge() {
+        return userAge;}
+    public int getUserRestPulse() {
+        return userRestPulse;
     }
 
     private static String getTimeStamp(String dateStr) {

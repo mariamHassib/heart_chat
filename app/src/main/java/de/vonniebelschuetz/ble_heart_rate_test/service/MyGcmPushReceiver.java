@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import java.util.regex.*;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -29,6 +30,8 @@ public class MyGcmPushReceiver extends GcmListenerService {
     private static final String TAG = MyGcmPushReceiver.class.getSimpleName();
 
     private NotificationUtils notificationUtils;
+
+    String ageAndresthr="";
 
     /**
      * Called when message is received.
@@ -93,6 +96,9 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 JSONObject mObj = datObj.getJSONObject("message");
                 Message message = new Message();
                 message.setMessage(Utils.decryptMessage(mObj.getString("message")));
+
+
+
                 message.setId(mObj.getString("message_id"));
                 message.setHr(mObj.getInt("heart_rate"));
                 message.setCreatedAt(mObj.getString("created_at"));
@@ -171,6 +177,21 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 user.setEmail(uObj.getString("email"));
                 user.setName(uObj.getString("name"));
                 message.setUser(user);
+
+                // Check if this message contains age and resting pulse as such text_age,pulse_
+                String messageString = message.getMessage();
+                String regexString = Pattern.quote("_") + "(.*?)" + Pattern.quote("_");
+                Pattern pattern = Pattern.compile(regexString);
+                // text contains the full text that you want to extract data
+                Matcher matcher = pattern.matcher(messageString);
+
+                if (matcher.find()) {
+                    ageAndresthr = matcher.group(1); // Since (.*?) is capturing group 1
+                    Log.i(TAG, "age and rest hr are: "+ ageAndresthr);
+                    message.setMessage(messageString.substring(0, messageString.length() - 7));
+                    Log.i(TAG, "message now is: " + message.getMessage());
+
+                }
 
                 // verifying whether the app is in background or foreground
                 if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
