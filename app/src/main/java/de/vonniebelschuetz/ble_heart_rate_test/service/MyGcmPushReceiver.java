@@ -1,5 +1,6 @@
 package de.vonniebelschuetz.ble_heart_rate_test.service;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import de.vonniebelschuetz.ble_heart_rate_test.app.Config;
 import de.vonniebelschuetz.ble_heart_rate_test.app.MyApplication;
 import de.vonniebelschuetz.ble_heart_rate_test.app.NotificationUtils;
 import de.vonniebelschuetz.ble_heart_rate_test.app.Utils;
+import de.vonniebelschuetz.ble_heart_rate_test.model.ChatRoom;
 import de.vonniebelschuetz.ble_heart_rate_test.model.Message;
 import de.vonniebelschuetz.ble_heart_rate_test.model.User;
 
@@ -41,8 +43,15 @@ public class MyGcmPushReceiver extends GcmListenerService {
      *               For Set of keys use data.keySet().
      */
 
+  //  int requestID = (int) System.currentTimeMillis(); //unique requestID to differentiate between various notification with same NotifId
+   // int flags = PendingIntent.FLAG_CANCEL_CURRENT;
+   // Intent intent;
+   // PendingIntent pIntent;
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
+
+     //   intent = new Intent(MyGcmPushReceiver.this, ChatRoomActivity.class);
+      //  pIntent = PendingIntent.getActivity(this, requestID, intent, flags);
         String title = bundle.getString("title");
         Boolean isBackground = Boolean.valueOf(bundle.getString("is_background"));
         String flag = bundle.getString("flag");
@@ -84,6 +93,10 @@ public class MyGcmPushReceiver extends GcmListenerService {
      * Processing chat room push message
      * this message will be broadcasts to all the activities registered
      * */
+    /**
+     * Processing chat room push message
+     * this message will be broadcasts to all the activities registered
+     * */
     private void processChatRoomPush(String title, boolean isBackground, String data) {
         Log.i(TAG, "processChatRoomPush(" + title + ", " + String.valueOf(isBackground) +", " + data + ")");
         if (!isBackground) {
@@ -96,9 +109,6 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 JSONObject mObj = datObj.getJSONObject("message");
                 Message message = new Message();
                 message.setMessage(Utils.decryptMessage(mObj.getString("message")));
-
-
-
                 message.setId(mObj.getString("message_id"));
                 message.setHr(mObj.getInt("heart_rate"));
                 message.setCreatedAt(mObj.getString("created_at"));
@@ -118,6 +128,21 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 user.setEmail(uObj.getString("email"));
                 user.setName(uObj.getString("name"));
                 message.setUser(user);
+
+                // Check if this message contains age and resting pulse as such text_age,pulse_
+                String messageString = message.getMessage();
+                String regexString = Pattern.quote("_") + "(.*?)" + Pattern.quote("_");
+                Pattern pattern = Pattern.compile(regexString);
+                // text contains the full text that you want to extract data
+                Matcher matcher = pattern.matcher(messageString);
+
+                if (matcher.find()) {
+                    ageAndresthr = matcher.group(1); // Since (.*?) is capturing group 1
+                    Log.i(TAG, "age and rest hr are: "+ ageAndresthr);
+                    message.setMessage(messageString.substring(0, messageString.length() - 7));
+                    Log.i(TAG, "message now is: " + message.getMessage());
+
+                }
 
                 // verifying whether the app is in background or foreground
                 if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {

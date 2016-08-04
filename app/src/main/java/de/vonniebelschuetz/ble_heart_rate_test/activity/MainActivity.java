@@ -80,7 +80,7 @@ public class MainActivity extends BleActivity {
     private ArrayList<ChatRoom> chatRoomArrayList;
     private ChatRoomsAdapter mAdapter;
     /*--- GCM ---*/
-
+Context mainContext;
     /*-+- Android methods -+-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class MainActivity extends BleActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         setActionBar((Toolbar) findViewById(R.id.toolbar));
         mActionBar = getActionBar();
-
+        mainContext = getApplicationContext();
         chatRoomArrayList = new ArrayList<>();
         mAdapter = new ChatRoomsAdapter(this, chatRoomArrayList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -160,6 +160,7 @@ public class MainActivity extends BleActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        mainContext = getApplicationContext();
         return super.onCreateOptionsMenu(menu);
     }
 

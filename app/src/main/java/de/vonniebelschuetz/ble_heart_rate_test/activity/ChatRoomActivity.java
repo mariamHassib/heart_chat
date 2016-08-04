@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.vonniebelschuetz.ble_heart_rate_test.R;
+import de.vonniebelschuetz.ble_heart_rate_test.app.Config;
 import de.vonniebelschuetz.ble_heart_rate_test.app.Utils;
 import de.vonniebelschuetz.ble_heart_rate_test.adapter.ChatRoomThreadAdapter;
 import de.vonniebelschuetz.ble_heart_rate_test.app.EndPoints;
@@ -111,7 +112,7 @@ public class ChatRoomActivity extends BleActivity {
         }
         return decryptedMessage;
     }
-
+Context mainContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +120,7 @@ public class ChatRoomActivity extends BleActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar(toolbar);
         mActionBar = getActionBar();
+        mainContext=getApplicationContext();
 
         inputMessage = (EditText) findViewById(R.id.message);
         Button btnSend = (Button) findViewById(R.id.btn_send);
@@ -156,7 +158,7 @@ public class ChatRoomActivity extends BleActivity {
 
         if (chatRoomId == null) {
             Toast.makeText(getApplicationContext(), "Chat room not found!", Toast.LENGTH_SHORT).show();
-            finish();
+           finish();
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -215,7 +217,8 @@ public class ChatRoomActivity extends BleActivity {
     protected void onResume() {
         Log.i(TAG, "onResume()");
         super.onResume();
-
+        //String msg = getIntent().getStringExtra(Config.PUSH_TYPE_USER);
+        //inputMessage.setText(msg);
         // invalidate adapter data set, since preference may have changed
         // - might need to reset the color of all messages
         // TODO get the color to update when switching back from history mode
@@ -527,7 +530,8 @@ public class ChatRoomActivity extends BleActivity {
 
                         mMessageAdapter.notifyDataSetChanged();
                         if (mMessageAdapter.getItemCount() > 1) {
-                            recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, mMessageAdapter.getItemCount() - 1);
+                            recyclerView.getLayoutManager().scrollToPosition(mMessageAdapter.getItemCount() - 1);
+
                         }
 
                     } else {
