@@ -120,7 +120,7 @@ Context mainContext;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar(toolbar);
         mActionBar = getActionBar();
-        mainContext=getApplicationContext();
+     //  mainContext=this.getApplicationContext();
 
         inputMessage = (EditText) findViewById(R.id.message);
         Button btnSend = (Button) findViewById(R.id.btn_send);
@@ -195,7 +195,7 @@ Context mainContext;
                     // save hr in shared preferences
 
                     String hr = mPreferences.getString(getResources().getString(R.string.pref_key_heart_rate), "no heart rate");
-                    String message = "My heart rate now is: " + hr;
+                    String message = "My heart rate now is: " + hr +" bpm";
                     sendMessage(message, hr);
                 }
             });
@@ -254,7 +254,7 @@ Context mainContext;
 
              message= this.inputMessage.getText().toString().trim()
                     +"__"+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
-                    +','+mPreferences.getString(getResources().getString(R.string.pref_summary_resting_pulse),"60")
+                    +','+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"60")
                     +"__";
             messageCount++;
         }
@@ -414,7 +414,7 @@ Context mainContext;
                     secondInitial = "+" + String.valueOf(chatRoomUsers.size()-1);
                 }
 
-                String resting_pulse = mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse), "60");
+                String resting_pulse = mPreferences.getString(getResources().getString(R.string.pref_summary_resting_pulse), "60");
                 int max_hr= (int)(208- (0.7*(Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_user_age), "26")))));
                 int maxhradjusted = (int)(max_hr-(max_hr-(0.9*max_hr)));
                 int firstColor = Utils.getColor(Integer.parseInt(hr), Integer.parseInt(resting_pulse), (int)(max_hr-(max_hr-(0.9*max_hr))), 0.0, 0.30, true);

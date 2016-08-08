@@ -138,6 +138,9 @@ public class NotificationUtils {
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(Config.NOTIFICATION_ID, notification);
+       // notification.setLatestEventInfo(mContext, title, message, );
+      //  notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        //notificationManager.notify(0, notification);
     }
 
     private void showBigNotification(Bitmap bitmap, NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {

@@ -21,7 +21,7 @@
         android:paddingTop="10dp"
         android:scrollbars="vertical" />
 
-    <RelativeLayout
+    <LinearLayout
         android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +29,7 @@
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:orientation="horizontal">
+
 
         <EditText android:id="@+id/message"
             android:layout_width="0dip"
@@ -46,25 +47,37 @@
             android:gravity="bottom" />
 
         <Button android:id="@+id/btn_send_hr"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:text= "@string/send_hr"
-            android:textSize="16sp"
-            android:textColor="@color/colorPrimary"
+
+           android:layout_width= "44dp"
+            android:layout_height="44dp"
+            android:background="@mipmap/ic_hr_button"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="3dp"
             android:visibility="gone"
             />
+           <!-- android:background="@drawable/button_hr"
+            android:textColor="@color/colorPrimary"
+
+            android:textSize="10sp"-->
+
+
+
 
         <Button android:id="@+id/btn_send"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="2dp"
             android:layout_width="0dp"
+
+            android:minHeight="40dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
+            android:background="@drawable/button_send"
+            android:textColor="@color/bg_bubble_other"
             android:text="@string/send"
-            android:textSize="16sp"
-            android:textColor="@color/colorPrimary" />
+            android:layout_marginTop="3dp"
+            android:textSize="12sp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
