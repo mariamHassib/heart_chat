@@ -4,7 +4,9 @@ android {
     buildToolsVersion '23.0.3'
     defaultConfig {
         applicationId "de.vonniebelschuetz.ble_heart_rate_test"
-        minSdkVersion 22
+        versionCode 1
+        versionName "1.1"
+        minSdkVersion 21
         targetSdkVersion 23
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

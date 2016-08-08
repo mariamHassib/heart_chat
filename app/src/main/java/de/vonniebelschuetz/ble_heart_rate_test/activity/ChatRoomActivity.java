@@ -254,7 +254,7 @@ Context mainContext;
 
              message= this.inputMessage.getText().toString().trim()
                     +"__"+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
-                    +','+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"60")
+                    +','+mPreferences.getString(getResources().getString(R.string.pref_summary_resting_pulse),"60")
                     +"__";
             messageCount++;
         }

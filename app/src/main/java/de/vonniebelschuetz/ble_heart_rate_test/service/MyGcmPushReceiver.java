@@ -45,12 +45,14 @@ public class MyGcmPushReceiver extends GcmListenerService {
 
   //  int requestID = (int) System.currentTimeMillis(); //unique requestID to differentiate between various notification with same NotifId
    // int flags = PendingIntent.FLAG_CANCEL_CURRENT;
-   // Intent intent;
+    Intent resultIntent;
+    Intent mainIntent;
    // PendingIntent pIntent;
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
 
-     //   intent = new Intent(MyGcmPushReceiver.this, ChatRoomActivity.class);
+        resultIntent = new Intent(MyGcmPushReceiver.this, ChatRoomActivity.class);
+        mainIntent = new Intent(MyGcmPushReceiver.this, MainActivity.class);
       //  pIntent = PendingIntent.getActivity(this, requestID, intent, flags);
         String title = bundle.getString("title");
         Boolean isBackground = Boolean.valueOf(bundle.getString("is_background"));
@@ -100,6 +102,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
     private void processChatRoomPush(String title, boolean isBackground, String data) {
         Log.i(TAG, "processChatRoomPush(" + title + ", " + String.valueOf(isBackground) +", " + data + ")");
         if (!isBackground) {
+       //     if(getApplicationContext()!=null){
 
             try {
                 JSONObject datObj = new JSONObject(data);
@@ -145,7 +148,9 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 }
 
                 // verifying whether the app is in background or foreground
+                //
                 if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+                //if(getApplicationContext()!=null){
                     Log.d(TAG, "App is not in background");
 
                     // app is in foreground, broadcast the push message
@@ -161,9 +166,9 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 } else {
                     Log.d(TAG, "App is in background");
                     // app is in background. show the message in notification try
-                    Intent resultIntent = new Intent(getApplicationContext(), ChatRoomActivity.class);
-                    resultIntent.putExtra("chat_room_id", chatRoomId);
-                    showNotificationMessage(getApplicationContext(), title, user.getName() + " : " + message.getMessage(), message.getCreatedAt(), resultIntent);
+                     //mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    mainIntent.putExtra("chat_room_id", chatRoomId);
+                    showNotificationMessage(getApplicationContext(), title, user.getName() + " : " + message.getMessage(), message.getCreatedAt(), mainIntent);
                 }
 
             } catch (JSONException e) {
@@ -233,7 +238,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 } else {
 
                     // app is in background. show the message in notification try
-                    Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                  //  Intent resultIntent = new Intent(getApplicationContext(), ChatRoomActivity.class);
 
                     // check for push notification image attachment
                     if (TextUtils.isEmpty(imageUrl)) {

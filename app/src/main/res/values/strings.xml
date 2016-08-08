@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HR App</string>
+    <string name="app_name">HeartChat</string>
     <string name="no_value">no value</string>
     <string name="select_device">Select a device to connect to</string>
     <string name="label_preferences">Preferences</string>
