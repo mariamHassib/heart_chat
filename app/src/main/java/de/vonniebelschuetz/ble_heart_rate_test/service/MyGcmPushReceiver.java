@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.regex.*;
 import android.widget.Toast;
 
@@ -167,8 +169,12 @@ public class MyGcmPushReceiver extends GcmListenerService {
                     Log.d(TAG, "App is in background");
                     // app is in background. show the message in notification try
                      //mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                    mainIntent.putExtra("chat_room_id", chatRoomId);
-                    showNotificationMessage(getApplicationContext(), title, user.getName() + " : " + message.getMessage(), message.getCreatedAt(), mainIntent);
+                   resultIntent.putExtra("chat_room_id", chatRoomId);
+                    ArrayList<User> users= new ArrayList<User>();
+                    users.add(user);
+                    resultIntent.putExtra( "chat_room_users", users);
+                    resultIntent.putExtra("name", user.getName());
+                    showNotificationMessage(getApplicationContext(), title, user.getName() + " : " + message.getMessage(), message.getCreatedAt(), resultIntent);
                 }
 
             } catch (JSONException e) {

@@ -115,8 +115,8 @@ Context mainContext;
                 // when chat is clicked, launch full chat thread activity
                 ChatRoom chatRoom = chatRoomArrayList.get(position);
                 Intent intent = new Intent(MainActivity.this, ChatRoomActivity.class);
-                intent.putExtra(getPackageName() + ".chat_room_id", chatRoom.getId());
-                intent.putExtra(getPackageName() + ".chat_room_users", chatRoom.getUsers());
+                intent.putExtra("chat_room_id", chatRoom.getId());
+                intent.putExtra("chat_room_users", chatRoom.getUsers());
                 Log.d(TAG, "Users in Chatroom:");
                 for (User user : chatRoom.getUsers()) {
                     Log.d(TAG, user.getName() + ", " + user.getEmail());
@@ -124,7 +124,7 @@ Context mainContext;
 
                 // set chat room name
                 String name = Utils.getChatroomName(chatRoom);
-                intent.putExtra(getPackageName() + ".name", name);
+                intent.putExtra("name", name);
                 Log.d(TAG, getPackageName()+ ".name: " + name);
 
                 startActivity(intent);

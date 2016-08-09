@@ -139,14 +139,14 @@ Context mainContext;
         }
 
         Intent intent = getIntent();
-        chatRoomId = intent.getStringExtra(getPackageName() + ".chat_room_id");
+        chatRoomId = intent.getStringExtra("chat_room_id");
         try {
-            chatRoomUsers = (ArrayList<User>) intent.getSerializableExtra(getPackageName() + ".chat_room_users");
+            chatRoomUsers = (ArrayList<User>) intent.getSerializableExtra("chat_room_users");
         } catch (ClassCastException e) {
             Log.e(TAG, "Error casting users", e);
             chatRoomUsers = new ArrayList<>();
         }
-        String title = intent.getStringExtra(getPackageName() + ".name");
+        String title = intent.getStringExtra("name");
 
         if (mActionBar != null) {
             mActionBar.setDisplayShowTitleEnabled(true);
