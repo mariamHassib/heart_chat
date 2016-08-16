@@ -33,8 +33,8 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private int SELF = 100;
     private static String today;
     String ageAndresthr="";
-    int userAge=25;
-    int userRestPulse=60;
+    int userAge=26;
+    int userRestPulse=70;
 
     private Context mContext;
     private ArrayList<Message> messageArrayList;
@@ -98,7 +98,7 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         // Check if this message contains age and resting pulse as such text_age,pulse_
         String messageString = message.getMessage();
-        String regexString = Pattern.quote("__") + "(.*?)" + Pattern.quote("__");
+        String regexString = Pattern.quote("__Start__") + "(.*?)" + Pattern.quote("__End__");
         Pattern pattern = Pattern.compile(regexString);
         // text contains the full text that you want to extract data
         Matcher matcher = pattern.matcher(messageString);
@@ -106,7 +106,7 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (matcher.find()) {
             ageAndresthr = matcher.group(1); // Since (.*?) is capturing group 1
             Log.i(TAG, "age and rest hr are: " + ageAndresthr);
-            message.setMessage(messageString.substring(0, messageString.length() - 9));
+            message.setMessage(messageString.substring(0, messageString.length() - 21));
             Log.i(TAG, "message now is: " + message.getMessage());
             String [] output = ageAndresthr.split(",");
             String ageString=output[0] ;
@@ -131,7 +131,7 @@ public class ChatRoomThreadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         //int resting_pulse = Integer.parseInt(preferences.getString(mContext.getString(R.string.pref_key_resting_pulse), "50"));
         int resting_pulse=userRestPulse;
         int max_hr=(int)(208-(0.7*userAge));
-        int color = Utils.getColor(message.getHr(), resting_pulse,(int)(max_hr-(max_hr-(0.9*max_hr))) , 0.0, 0.35, true);
+        int color = Utils.getColor(message.getHr(), resting_pulse,(int)(max_hr-(max_hr-(0.8*max_hr))) , 0.0, 0.35, true);
         colorMessage(holder, color);
     }
 

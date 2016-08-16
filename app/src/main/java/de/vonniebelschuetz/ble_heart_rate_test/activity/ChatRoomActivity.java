@@ -76,6 +76,9 @@ public class ChatRoomActivity extends BleActivity {
                     if (key.equals(getResources().getString(R.string.pref_key_encryption_password))) {
                         initEncryptor();
                     }
+                   else if (key.equals(getResources().getString(R.string.pref_key_resting_pulse))) {
+
+                    }
                     break;
                 }
                 default: {
@@ -192,11 +195,17 @@ Context mainContext;
                 @Override
                 public void onClick(View v) {
                     // save hr in shared preferences
-                    // save hr in shared preferences
+
 
                     String hr = mPreferences.getString(getResources().getString(R.string.pref_key_heart_rate), "no heart rate");
+                    if(!hr.equals("no heart rate")|| !hr.equals("-1")){
                     String message = "My heart rate now is: " + hr +" bpm";
                     sendMessage(message, hr);
+                    }
+                    else{
+
+                        Toast.makeText(getApplicationContext(), "Sensor not connected", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -253,9 +262,9 @@ Context mainContext;
         if (messageCount==-1){
 
              message= this.inputMessage.getText().toString().trim()
-                    +"__"+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
-                    +','+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"60")
-                    +"__";
+                    +"__Start__"+mPreferences.getString(getResources().getString(R.string.pref_key_user_age),"26")
+                    +','+mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse),"70")
+                    +"__End__";
             messageCount++;
         }
         else{
@@ -414,10 +423,10 @@ Context mainContext;
                     secondInitial = "+" + String.valueOf(chatRoomUsers.size()-1);
                 }
 
-                String resting_pulse = mPreferences.getString(getResources().getString(R.string.pref_summary_resting_pulse), "60");
+                String resting_pulse = mPreferences.getString(getResources().getString(R.string.pref_key_resting_pulse), "70");
                 int max_hr= (int)(208- (0.7*(Integer.parseInt(mPreferences.getString(getString(R.string.pref_key_user_age), "26")))));
-                int maxhradjusted = (int)(max_hr-(max_hr-(0.9*max_hr)));
-                int firstColor = Utils.getColor(Integer.parseInt(hr), Integer.parseInt(resting_pulse), (int)(max_hr-(max_hr-(0.9*max_hr))), 0.0, 0.30, true);
+                int maxhradjusted = (int)(max_hr-(max_hr-(0.8*max_hr)));
+                int firstColor = Utils.getColor(Integer.parseInt(hr), Integer.parseInt(resting_pulse), (int)(max_hr-(max_hr-(0.8*max_hr))), 0.0, 0.30, true);
                 Log.i(TAG, "max HR is now" + maxhradjusted);
                 //Toast.makeText(getApplicationContext(), "" +  "max HR is now" + max_hr,Toast.LENGTH_SHORT).show();;
 
@@ -429,7 +438,7 @@ Context mainContext;
                     int secondAge = mMessageAdapter.getUserAge();
                     int secondUserMaxHr= 208-(int)(0.7*secondAge);
                     int secondUserRHR = mMessageAdapter.getUserRestPulse();
-                    secondColor = Utils.getColor(lastHrReceived, secondUserRHR, (int)(secondUserMaxHr - (secondUserMaxHr - ( 0.9 * secondUserMaxHr))), 0.0, 0.30, true);
+                    secondColor = Utils.getColor(lastHrReceived, secondUserRHR, (int)(secondUserMaxHr - (secondUserMaxHr - ( 0.8 * secondUserMaxHr))), 0.0, 0.30, true);
                 }
                 TextDrawable firstDrawable = builder.build(firstInitial, firstColor);
                 TextDrawable secondDrawable = builder.build(secondInitial, secondColor);

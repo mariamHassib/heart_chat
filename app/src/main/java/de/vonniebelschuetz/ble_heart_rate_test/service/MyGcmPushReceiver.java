@@ -136,7 +136,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
 
                 // Check if this message contains age and resting pulse as such text_age,pulse_
                 String messageString = message.getMessage();
-                String regexString = Pattern.quote("_") + "(.*?)" + Pattern.quote("_");
+                String regexString = Pattern.quote("__Start__") + "(.*?)" + Pattern.quote("__End__");
                 Pattern pattern = Pattern.compile(regexString);
                 // text contains the full text that you want to extract data
                 Matcher matcher = pattern.matcher(messageString);
@@ -144,7 +144,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 if (matcher.find()) {
                     ageAndresthr = matcher.group(1); // Since (.*?) is capturing group 1
                     Log.i(TAG, "age and rest hr are: "+ ageAndresthr);
-                    message.setMessage(messageString.substring(0, messageString.length() - 7));
+                    message.setMessage(messageString.substring(0, messageString.length() - 21));
                     Log.i(TAG, "message now is: " + message.getMessage());
 
                 }
@@ -216,7 +216,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
 
                 // Check if this message contains age and resting pulse as such text_age,pulse_
                 String messageString = message.getMessage();
-                String regexString = Pattern.quote("_") + "(.*?)" + Pattern.quote("_");
+                String regexString = Pattern.quote("__Start__") + "(.*?)" + Pattern.quote("__End__");
                 Pattern pattern = Pattern.compile(regexString);
                 // text contains the full text that you want to extract data
                 Matcher matcher = pattern.matcher(messageString);
@@ -224,7 +224,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
                 if (matcher.find()) {
                     ageAndresthr = matcher.group(1); // Since (.*?) is capturing group 1
                     Log.i(TAG, "age and rest hr are: "+ ageAndresthr);
-                    message.setMessage(messageString.substring(0, messageString.length() - 7));
+                    message.setMessage(messageString.substring(0, messageString.length() - 21));
                     Log.i(TAG, "message now is: " + message.getMessage());
 
                 }

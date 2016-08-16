@@ -68,6 +68,8 @@ public abstract class BleActivity extends Activity {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Log.i(TAG, "onServiceDisconnected()");
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putString(getString(R.string.pref_key_heart_rate), String.valueOf(-1));
             mService = null;
             mBound = false;
         }
@@ -140,6 +142,7 @@ public abstract class BleActivity extends Activity {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.remove(getString(R.string.pref_key_last_connected_device));
         editor.putBoolean(getString(R.string.pref_key_reconnect), false);
+        editor.putString(getString(R.string.pref_key_heart_rate), String.valueOf(-1));
         editor.apply();
         mService.disconnect();
     }
